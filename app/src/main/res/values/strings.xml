@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">NUMAD21Fa_NikhilMollay</string>
+    <string name = "button_name">ABOUT ME!</string>
+    <string name = "button_clicky">Clicky Clicky</string>
+    <string name = "button_A">A</string>
+    <string name = "button_B">B</string>
+    <string name = "button_C">C</string>
+    <string name = "button_D">D</string>
+    <string name = "button_E">E</string>
+    <string name = "button_F">F</string>
+
 </resources>
