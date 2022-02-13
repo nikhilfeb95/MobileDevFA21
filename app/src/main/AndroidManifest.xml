@@ -21,6 +21,9 @@
         <activity android:name=".ClickActivity">
 
         </activity>
+        <activity android:name=".InfoActivity">
+
+        </activity>
     </application>
 
 </manifest>

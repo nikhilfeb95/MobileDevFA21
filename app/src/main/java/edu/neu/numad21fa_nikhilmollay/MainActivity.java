@@ -17,9 +17,13 @@ public class MainActivity extends AppCompatActivity {
 
         Button aboutMebtn = findViewById(R.id.aboutMeButton);
 
-        aboutMebtn.setOnClickListener(x -> Toast.makeText(getApplicationContext(),
-                "Name : Nikhil Mollay \n Email: mollay.n@northeastern.edu",
-                Toast.LENGTH_LONG).show());
+        aboutMebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button clickyBtn = findViewById(R.id.clickyButton);
         clickyBtn.setOnClickListener(new View.OnClickListener() {
