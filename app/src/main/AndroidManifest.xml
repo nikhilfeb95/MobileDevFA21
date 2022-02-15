@@ -24,6 +24,7 @@
         <activity android:name=".InfoActivity">
 
         </activity>
+        <activity android:name=".LinkCollector"></activity>
     </application>
 
 </manifest>

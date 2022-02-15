@@ -33,5 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button linkCollectorButton = findViewById(R.id.linkCollectorButton);
+        linkCollectorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent linkIntent = new Intent(MainActivity.this, LinkCollector.class);
+                startActivity(linkIntent);
+            }
+        });
     }
 }

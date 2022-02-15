@@ -8,6 +8,14 @@ import android.net.Uri;
  */
 public class ItemCard implements LinkClickListener{
 
+    public String getLinkName() {
+        return linkName;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
     public final String linkName;
     public final String link;
 
