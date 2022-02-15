@@ -2,25 +2,31 @@ package edu.neu.numad21fa_nikhilmollay;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.Layout;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -44,7 +50,6 @@ public class LinkCollector extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.link_collector);
-
         init(savedInstanceState);
 
         addButton = findViewById(R.id.addLinkButton);
@@ -55,17 +60,38 @@ public class LinkCollector extends AppCompatActivity {
                 addLinkUsingAlert(view, position);
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                View currentLayout = findViewById(android.R.id.content);
+                Snackbar snackbar = Snackbar.make(currentLayout, "Link deleted successfully",Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                TextView snackbarTextView = snackbarView.findViewById(R.id.snackbar_text);
+                snackbarTextView.setTextColor(Color.RED);
+                snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                snackbar.show();
+                int position = viewHolder.getLayoutPosition();
+                itemList.remove(position);
+                linkViewAdapter.notifyItemRemoved(position);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void init(Bundle savedInstanceState){
+        initialItemData(savedInstanceState);
         createRecyclerView();
     }
 
     // Handling Orientation Changes on Android
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-
-
         int size = itemList == null ? 0 : itemList.size();
         outState.putInt(NUMBER_OF_ITEMS, size);
         for (int i = 0; i < size; i++) {
@@ -133,7 +159,7 @@ public class LinkCollector extends AppCompatActivity {
 
                 if(Patterns.WEB_URL.matcher(linkUrl).matches()){
                     itemList.add(position, new ItemCard(linkName, linkUrl));
-                    linkViewAdapter.notifyItemChanged(position);
+                    linkViewAdapter.notifyItemInserted(0);
                     message = "Link successfully added";
                 }
                 else{
@@ -153,5 +179,28 @@ public class LinkCollector extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    /**
+     * A method to handle saving state for rotations.
+     * @param savedInstanceState The bundle where the data is stored.
+     */
+    private void initialItemData(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
+            if (itemList == null || itemList.size() == 0) {
+
+                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
+
+                // Retrieve keys we stored in the instance
+                for (int i = 0; i < size; i++) {
+                    String linkName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
+                    String linkUrl = savedInstanceState.getString(KEY_OF_INSTANCE + i + "2");
+
+                    ItemCard itemCard = new ItemCard(linkName,linkUrl);
+
+                    itemList.add(itemCard);
+                }
+            }
+        }
     }
 }

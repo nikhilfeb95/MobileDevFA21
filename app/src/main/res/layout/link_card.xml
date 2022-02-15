@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_margin="10dp"
     app:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="61dp"
         android:layout_margin="5dp">
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/link_name"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="-6dp"
+            android:layout_marginTop="8dp"
             android:text="@string/item_description" />
 
     </RelativeLayout>
