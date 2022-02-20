@@ -56,6 +56,10 @@ public class LocationActivity extends AppCompatActivity {
                             lattitudeTextView.setText(String.valueOf(location.getLatitude()));
                             longitudeTextView.setText(String.valueOf(location.getLongitude()));
                         }
+                        else{
+                            lattitudeTextView.setText("Location services not available");
+                            longitudeTextView.setText("Location services not available");
+                        }
                     }
                 });
             }
@@ -77,4 +81,13 @@ public class LocationActivity extends AppCompatActivity {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (checkPermissions()) {
+            getUserLocation();
+        }
+    }
+
 }
