@@ -44,14 +44,23 @@
         android:id="@+id/linkCollectorButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:layout_marginBottom="148dp"
         android:text="Link Collector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/locator"
         app:layout_constraintTop_toBottomOf="@+id/clickyButton"
-        app:layout_constraintVertical_bias="0.41" />
+        app:layout_constraintVertical_bias="0.444" />
+
+    <Button
+        android:id="@+id/locator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_location"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toEndOf="@+id/linkCollectorButton"
+        app:layout_constraintTop_toBottomOf="@+id/clickyButton"
+        app:layout_constraintVertical_bias="0.444" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

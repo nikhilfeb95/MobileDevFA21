@@ -2,6 +2,7 @@
     <string name="app_name">NUMAD21Fa_NikhilMollay</string>
     <string name = "button_name">ABOUT ME!</string>
     <string name = "button_clicky">Clicky Clicky</string>
+    <string name = "button_location">Locator</string>
     <string name = "button_A">A</string>
     <string name = "button_B">B</string>
     <string name = "button_C">C</string>
