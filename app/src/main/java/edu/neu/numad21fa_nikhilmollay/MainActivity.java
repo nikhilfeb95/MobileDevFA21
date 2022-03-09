@@ -51,5 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(locatorIntent);
             }
         });
+
+        Button serviceButton = findViewById(R.id.service);
+        serviceButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent serviceIntent = new Intent(MainActivity.this, ServiceActivity.class);
+                 startActivity(serviceIntent);
+             }
+         });
     }
 }

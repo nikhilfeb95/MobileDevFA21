@@ -3,6 +3,7 @@
     <string name = "button_name">ABOUT ME!</string>
     <string name = "button_clicky">Clicky Clicky</string>
     <string name = "button_location">Locator</string>
+    <string name = "button_service">At your Service</string>
     <string name = "button_A">A</string>
     <string name = "button_B">B</string>
     <string name = "button_C">C</string>
@@ -16,4 +17,16 @@
 
     <string name ="text_view_lattitude">Lattitude : </string>
     <string name="text_view_longitude">Longitude : </string>
+
+    <!--All the service strings are here -->
+    <string name="service_title">Title : </string>
+    <string name="service_publish_year">Released Year : </string>
+    <string name="service_author_name">Author Name : </string>
+    <string name="service_isbn">ISBN : </string>
+    <string name="service_publisher">Publisher : </string>
+    <string name="service_language">Language : </string>
+    <string name="service_first_sentence">First Sentence : </string>
+
+    <string name="service_top_title">Find Book Details</string>
+    <string name="service_search_query">Enter Book Name : </string>
 </resources>

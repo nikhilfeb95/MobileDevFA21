@@ -34,11 +34,11 @@
         android:layout_height="wrap_content"
         android:text="@string/button_clicky"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintEnd_toStartOf="@id/service"
+        app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aboutMeButton"
-        app:layout_constraintVertical_bias="0.151" />
+        app:layout_constraintVertical_bias="0.167" />
 
     <Button
         android:id="@+id/linkCollectorButton"
@@ -62,5 +62,16 @@
         app:layout_constraintStart_toEndOf="@+id/linkCollectorButton"
         app:layout_constraintTop_toBottomOf="@+id/clickyButton"
         app:layout_constraintVertical_bias="0.444" />
+
+    <Button
+        android:id="@+id/service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_service"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutMeButton"
+        app:layout_constraintStart_toEndOf="@+id/clickyButton"
+        app:layout_constraintVertical_bias="0.167" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
