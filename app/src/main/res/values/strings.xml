@@ -27,6 +27,7 @@
     <string name="service_language">Language : </string>
     <string name="service_first_sentence">First Sentence : </string>
 
+    <string name="service_search">Search</string>
     <string name="service_top_title">Find Book Details</string>
     <string name="service_search_query">Enter Book Name : </string>
 </resources>

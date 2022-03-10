@@ -1,9 +1,9 @@
 package edu.neu.numad21fa_nikhilmollay;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
@@ -28,7 +28,6 @@ public class ServiceActivity extends AppCompatActivity {
     private final Handler textHandler = new Handler();
     private TextView searchTitle;
     private ScrollView booksScrollView;
-    private TextView loading;
     private TextView title;
     private TextView year;
     private TextView author_name;
@@ -49,22 +48,36 @@ public class ServiceActivity extends AppCompatActivity {
         publisher = findViewById(R.id.publisher);
         first_sentence = findViewById(R.id.first_sentence);
         language = findViewById(R.id.language);
-        loading = findViewById(R.id.loading);
         searchTitle = findViewById(R.id.searchTitle);
-        booksScrollView = findViewById(R.id.scrollView);
+        booksScrollView = findViewById(R.id.scrollViewService);
         progressBar = findViewById(R.id.serviceProgressBar);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         if (!title.getText().toString().isEmpty()) {
-            savedInstanceState.putString("title", title.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("year", year.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("author", author_name.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("isbn", isbn.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("publisher", publisher.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("first_sentence", first_sentence.getText().toString().split(":", 2)[1]);
-            savedInstanceState.putString("language", language.getText().toString().split(":", 2)[1]);
+            savedInstanceState.putString("title", title.getText().toString().split(":", 2)[1].trim());
+            savedInstanceState.putString("year", year.getText().toString().split(":", 2)[1].trim());
+            savedInstanceState.putString("author", author_name.getText().toString().split(":", 2)[1].trim());
+            savedInstanceState.putString("isbn", isbn.getText().toString().split(":", 2)[1].trim());
+            savedInstanceState.putString("publisher", publisher.getText().toString().split(":", 2)[1].trim());
+            if(first_sentence.getText().length() > 0){
+                savedInstanceState.putString("first_sentence",
+                        first_sentence.getText().toString()
+                                .split(":", 2)[1].trim().length() < 2 ? "":first_sentence.getText().toString()
+                                .split(":", 2)[1].trim());
+
+            }
+            else{
+                savedInstanceState.putString("first_sentence","");
+            }
+            if(language.getText().length() > 0){
+                savedInstanceState.putString("language", language.getText().toString().split(":", 2)[1].trim());
+            }
+            else{
+                savedInstanceState.putString("language","");
+            }
+
         }
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -88,12 +101,10 @@ public class ServiceActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
         progressBar.setVisibility(View.INVISIBLE);
-        loading.setText("Searching...");
-        loading.setVisibility(View.INVISIBLE);
         booksScrollView.setVisibility(View.INVISIBLE);
         if (searchTitle.getText().toString().isEmpty()) {
-            resetData();
-            Snackbar snack = Snackbar.make(view, "Movie title required!", Snackbar.LENGTH_LONG).setAction("Action", null);
+            resetEnvironment();
+            Snackbar snack = Snackbar.make(view, "Enter a book title", Snackbar.LENGTH_LONG).setAction("Action", null);
             View snackView = snack.getView();
             TextView mTextView = snackView.findViewById(com.google.android.material.R.id.snackbar_text);
             mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -101,16 +112,11 @@ public class ServiceActivity extends AppCompatActivity {
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
-        loading.setVisibility(View.VISIBLE);
-        callWebService();
+        ServiceThread serviceThread = new ServiceThread();
+        new Thread(serviceThread).start();
     }
 
-    private void callWebService() {
-        WebServiceThread webServiceThread = new WebServiceThread();
-        new Thread(webServiceThread).start();
-    }
-
-    private void resetData() {
+    private void resetEnvironment() {
         title.setText("");
         year.setText("");
         author_name.setText("");
@@ -120,7 +126,7 @@ public class ServiceActivity extends AppCompatActivity {
         language.setText("");
     }
 
-    class WebServiceThread implements Runnable {
+    class ServiceThread implements Runnable {
         @Override
         public void run() {
             try {
@@ -129,16 +135,23 @@ public class ServiceActivity extends AppCompatActivity {
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
                 conn.connect();
-                InputStream inputStream = conn.getInputStream();
-                String response = convertStreamToString(inputStream);
+                String response = streamToString(conn.getInputStream());
                 JSONObject getBooks = new JSONObject(response);
                 JSONArray books = getBooks.getJSONArray("docs");
                 books.getJSONObject(0).get("isbn");
                 textHandler.post(() -> {
                     try {
-                        if (getBooks.has("Error")) {
-                            resetData();
-                            loading.setText("Book not in service!");
+                        if (getBooks.has("Error") || getBooks.length() == 0 ||
+                                books.getJSONObject(0).get("first_publish_year").toString().length() == 0) {
+                            resetEnvironment();
+                            View currentLayout = findViewById(android.R.id.content);
+                            Snackbar snackbar = Snackbar.make(currentLayout, "Couldn't find book in service",Snackbar.LENGTH_LONG);
+                            View snackbarView = snackbar.getView();
+                            TextView snackbarTextView = snackbarView.findViewById(R.id.snackbar_text);
+                            snackbarTextView.setTextColor(Color.RED);
+                            snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            snackbar.show();
+                            return;
                         } else {
                             title.setText("TITLE : " + books.getJSONObject(0).get("title").toString());
                             year.setText("Released Year : " + books.getJSONObject(0).get("first_publish_year").toString());
@@ -158,19 +171,36 @@ public class ServiceActivity extends AppCompatActivity {
 
                             }
                             progressBar.setVisibility(View.INVISIBLE);
-                            loading.setVisibility(View.INVISIBLE);
                             booksScrollView.setVisibility(View.VISIBLE);
                         }
                     } catch (Exception e) {
+                        resetEnvironment();
                         System.out.println(e);
+                        View currentLayout = findViewById(android.R.id.content);
+                        Snackbar snackbar = Snackbar.make(currentLayout, "Couldn't find book in service",Snackbar.LENGTH_LONG);
+                        View snackbarView = snackbar.getView();
+                        TextView snackbarTextView = snackbarView.findViewById(R.id.snackbar_text);
+                        snackbarTextView.setTextColor(Color.RED);
+                        snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        snackbar.show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
             } catch (Exception e) {
+                resetEnvironment();
                 System.out.println(e);
+                View currentLayout = findViewById(android.R.id.content);
+                Snackbar snackbar = Snackbar.make(currentLayout, "Couldn't find book in service",Snackbar.LENGTH_LONG);
+                View snackbarView = snackbar.getView();
+                TextView snackbarTextView = snackbarView.findViewById(R.id.snackbar_text);
+                snackbarTextView.setTextColor(Color.RED);
+                snackbarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                snackbar.show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }
 
-        private String convertStreamToString(InputStream inputStream) {
+        private String streamToString(InputStream inputStream) {
             Scanner s = new Scanner(inputStream).useDelimiter("\\A");
             return s.hasNext() ? s.next().replace(",", ",\n") : "";
         }

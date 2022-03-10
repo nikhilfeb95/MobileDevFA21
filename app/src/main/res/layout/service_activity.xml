@@ -7,10 +7,9 @@
     tools:context=".AtYourService">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/activityTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:text="@string/service_top_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,65 +17,61 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/searchTitleActivity"
         android:layout_width="133dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
         android:gravity="bottom"
         android:text="@string/service_search_query"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/searchTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/activityTitle" />
 
     <EditText
         android:id="@+id/searchTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
         android:width="20dp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintStart_toEndOf="@+id/searchTitleActivity"
+        app:layout_constraintTop_toBottomOf="@+id/activityTitle" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Search"
         android:onClick="onMovieSearchClick"
+        android:text="@string/service_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/searchTitleActivity" />
 
-    <TextView
-        android:id="@+id/loading"
+    <ProgressBar
+        android:id="@+id/serviceProgressBar"
+
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:progressTint="#249128"
         android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Searching..."
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintBottom_toBottomOf="@+id/scrollViewService"
+        app:layout_constraintTop_toTopOf="@+id/scrollViewService"
+        tools:layout_editor_absoluteX="30dp"
+        tools:visibility="invisible" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollViewService"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="30dp"
         android:scrollbars="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="invisible">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button">
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -88,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
 
             <TextView
@@ -108,16 +103,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="14sp"
-                android:text="" />
+                android:text=""
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/publisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="14sp"
-                android:text="" />
+                android:text=""
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/language"
@@ -132,18 +127,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textSize="14sp"
-                android:text="" />
-
-            <ProgressBar
-                android:id="@+id/serviceProgressBar"
-
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:progressTint="#249128"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:text=""
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>
